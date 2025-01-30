@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      title="msg://documentDetailView.title"
+      focusComponent="form">
+    <data>
+        <instance id="documentDc"
+                  class="com.company.jmix_test2.entity.Document">
+            <fetchPlan extends="_base">
+                <property name="branch" fetchPlan="_base"/>
+                <property name="department" fetchPlan="_base"/>
+                <property name="operation" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader id="documentDl"/>
+            <collection id="operationDc" property="operation"/>
+        </instance>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+    </facets>
+    <actions>
+        <action id="saveAction" type="detail_saveClose"/>
+        <action id="closeAction" type="detail_close"/>
+    </actions>
+    <layout>
+        <formLayout id="form" dataContainer="documentDc">
+            <responsiveSteps>
+                <responsiveStep minWidth="0" columns="1"/>
+                <responsiveStep minWidth="40em" columns="2"/>
+            </responsiveSteps>
+            <textField id="fioField" property="fio" label="ФИО"/>
+            <entityPicker id="departmentField" property="department"  label="Департамент">
+                <actions>
+                    <action id="entityLookup" type="entity_lookup"/>
+                    <action id="entityClear" type="entity_clear"/>
+                </actions>
+            </entityPicker>
+            <entityPicker id="branchField" property="branch" label="Отдел" >
+                <actions>
+                    <action id="entityLookup" type="entity_lookup"/>
+                    <action id="entityClear" type="entity_clear"/>
+                </actions>
+            </entityPicker>
+
+            <textField id="targetField" property="target" label="Цель конкретной операци"/>
+            <textField id="transmitted_resultField" property="transmitted_result"
+                       label="Кому передается результат операции"/>
+            <textField id="commentField" property="comment" label="Комментарий"/>
+        </formLayout>
+        <h4 text="msg://com.company.jmix_test2.entity/Document.operation"/>
+        <hbox id="buttonsPanel" classNames="buttons-panel">
+            <button action="operationDataGrid.create"/>
+            <button action="operationDataGrid.edit"/>
+            <button action="operationDataGrid.remove"/>
+        </hbox>
+        <dataGrid id="operationDataGrid" dataContainer="operationDc" width="100%" minHeight="20em">
+            <actions>
+                <action id="create" type="list_create">
+                    <properties>
+                        <property name="openMode" value="DIALOG"/>
+                    </properties>
+                </action>
+                <action id="edit" type="list_edit">
+                    <properties>
+                        <property name="openMode" value="DIALOG"/>
+                    </properties>
+                </action>
+                <action id="remove" type="list_remove"/>
+            </actions>
+            <columns>
+                <column property="name"/>
+                <column property="description"/>
+            </columns>
+        </dataGrid>
+        <hbox id="detailActions">
+            <button id="saveAndCloseButton" action="saveAction"/>
+            <button id="closeButton" action="closeAction"/>
+        </hbox>
+    </layout>
+</view>
